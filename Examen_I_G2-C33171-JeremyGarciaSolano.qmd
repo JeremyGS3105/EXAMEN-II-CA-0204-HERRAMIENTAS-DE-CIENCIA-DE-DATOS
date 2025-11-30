@@ -36,3 +36,26 @@ moras %>%
   select(SALARIO,EDAD) %>% 
   summary()
 ```
+
+## 3. Nueva columna con Z-SCORE
+
+```{r,eval=FALSE}
+llenar_NA <- function(df){
+  df[df == ""] <- NA
+  return(df)
+}
+moras<-llenar_NA(moras)
+  
+
+moras <- moras %>% 
+  mutate(
+    Z_EDAD =  abs((EDAD - mean(EDAD,na.rm=TRUE)) / sd(EDAD,na.rm=TRUE)),
+    CLASIFICACIÓN_EDAD = ifelse(Z_EDAD>1.96,"ATÍPICO","NORMAL"),
+    Z_SALARIO =  abs((SALARIO - mean(SALARIO,na.rm=TRUE)) / sd(SALARIO,na.rm=TRUE)),
+    CLASIFICACIÓN_SALARIO = ifelse(Z_SALARIO>1.96,"ATÍPICO","NORMAL")
+  )
+```
+
+```{r}
+head(moras)
+```
