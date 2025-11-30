@@ -141,3 +141,30 @@ for(j in variables_categoricas){
 Gráficos de morosos por sector:** Mantienen porcetajes similares, pero como la mayor cantidad está en el sector privado, quiere decir que hay mas morosos en el sector privado que en el público.\
 **Gráficos de morosos por activo:** Las personas que no tienen el seguro activo, puede ser por dos cosas, porque ya no lo quieren o porque no lo pagaron, y eso se evidencia en el gráfico mostrando un alto porcentaje de morosos con el seguro no activo.\
 **Gráficos de morosos por extranjeros:** Una gran parte de las personas extranjeras son morosas.\
+
+## 8.Gráficos por morosos
+
+```{r}
+ggplot(moras, aes(x = SALARIO, fill = INDICADOR_MOROSO)) +
+  geom_histogram(bins = 30, position = "identity", alpha = 0.6) +
+  labs(title = "Distribución del salario por morosidad",
+       x = "Salario",
+       y = "Frecuencia",
+       fill = "Moroso") +
+  scale_x_continuous(labels = scales::label_number())+
+  theme_minimal()
+
+ggplot(moras, aes(x = EDAD, fill = INDICADOR_MOROSO)) +
+  geom_histogram(bins = 20, position = "identity", alpha = 0.6) +
+  labs(title = "Distribución de la edad por morosidad",
+       x = "Edad",
+       y = "Frecuencia",
+       fill = "Moroso") +
+  scale_x_continuous(labels = scales::label_number())+
+  theme_minimal()
+```
+
+**Gráfico de SALARIO:** El salario está súper cargado hacia abajo: la mayoría gana poco y solo unos pocos tienen salarios muy altos. Las distribuciones de morosos y no morosos se ven casi iguales, así que el salario no marca mucha diferencia entre ellos. Incluso los salarios altísimos aparecen en ambos grupos, así que tampoco parecen indicar morosidad.
+
+\
+**Gráfico de EDAD:** El gráfico muestra que la distribución de edades es muy similar entre morosos y no morosos, con la mayoría concentrada entre los 25 y 55 años. No se observan diferencias claras en la forma o los picos entre ambos grupos, por lo que la edad no parece ser un factor que permita distinguir o predecir la morosidad.
