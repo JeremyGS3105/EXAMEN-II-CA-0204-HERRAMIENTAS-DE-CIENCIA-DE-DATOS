@@ -170,7 +170,6 @@ ggplot(moras, aes(x = EDAD, fill = INDICADOR_MOROSO)) +
 **Gráfico de EDAD:** El gráfico muestra que la distribución de edades es muy similar entre morosos y no morosos, con la mayoría concentrada entre los 25 y 55 años. No se observan diferencias claras en la forma o los picos entre ambos grupos, por lo que la edad no parece ser un factor que permita distinguir o predecir la morosidad.
 
 ## 10.Árbol
-
 ```{r}
 moras_1 <- moras %>%
   mutate(
