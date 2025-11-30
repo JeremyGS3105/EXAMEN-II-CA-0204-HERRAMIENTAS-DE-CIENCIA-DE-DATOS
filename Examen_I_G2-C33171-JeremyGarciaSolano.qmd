@@ -107,3 +107,37 @@ for (j in variables_categoricas) {
 **Gráfico de INDICADOR_ACTIVO:** La mayor parte de las personas, aún cuentan con un seguro activo.\
 **Gráfico por INDICADOR.EXTRANJERO:** Se puede difrenciar la cantidad de personas nacionales y extranjeras dentro de la base de datos.\
 **Gráfico por INDICADOR_MOROSO** **:** Hay más personas NO morosas que morosas,\
+
+## 7. Gráficos con porcentajes de NA´s
+
+```{r}
+graficar_morosos <- function(data, variable){
+
+  data %>% 
+    group_by(.data[[variable]]) %>% 
+    summarise(
+      total = n(),
+      morosos = sum(INDICADOR_MOROSO == "SI"),
+      porcentaje = morosos / total * 100
+    ) %>%
+    ggplot(aes(x = .data[[variable]], y = porcentaje)) +
+    geom_col(fill="skyblue") +
+    labs(
+      title = paste("Porcentaje de morosos por", variable),
+      x = variable,
+      y = "Porcentaje (%)"
+    ) +
+    theme_minimal()+
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+}
+
+for(j in variables_categoricas){
+  print(graficar_morosos(moras,j))
+}
+```
+
+**Gráficos de morosos por sexo:** Dentro de la base de datos hay más hombres morosos que mujeres morosas.\
+**Gráficos de morosos por tipo de aseguramiento:** El tipo de seguro donde hay mayor porcentaje de morosos, es en los de trabajores independientes, puede deberse a la estabilidad laboral de las personas que adquieren este tipo de seguro, ya que tienen en teoría tienen un trabajo propio.**\
+Gráficos de morosos por sector:** Mantienen porcetajes similares, pero como la mayor cantidad está en el sector privado, quiere decir que hay mas morosos en el sector privado que en el público.\
+**Gráficos de morosos por activo:** Las personas que no tienen el seguro activo, puede ser por dos cosas, porque ya no lo quieren o porque no lo pagaron, y eso se evidencia en el gráfico mostrando un alto porcentaje de morosos con el seguro no activo.\
+**Gráficos de morosos por extranjeros:** Una gran parte de las personas extranjeras son morosas.\
