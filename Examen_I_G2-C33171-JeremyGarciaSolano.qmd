@@ -59,3 +59,9 @@ moras <- moras %>%
 ```{r}
 head(moras)
 ```
+
+## 4.Calcular el % de NA por columna
+
+```{r}
+colSums(is.na(moras)) / nrow(moras) * 100
+```
