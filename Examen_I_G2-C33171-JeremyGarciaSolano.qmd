@@ -77,3 +77,33 @@ moras$EDAD[is.na(moras$EDAD)] <- median(moras$EDAD, na.rm = TRUE) #Se imputa la 
 moras$TIPO_ASEGURAMIENTO[is.na(moras$TIPO_ASEGURAMIENTO)] <- Mode(moras$TIPO_ASEGURAMIENTO,na.rm=TRUE) #Se imputa la moda
 
 ```
+
+## 6. Gráficos por variable
+
+```{r}
+variables_categoricas <- c("SEXO","TIPO_ASEGURAMIENTO",
+"SECTOR","INDICADOR_ACTIVO","INDICADOR.EXTRANJERO","INDICADOR_MOROSO")
+
+graficar_categorias <- function(df, variable) {
+  ggplot(df, aes(x = .data[[variable]])) +
+    geom_bar(fill = "skyblue") +
+    labs(
+      title = paste("Cantidad de individuos por", variable),
+      x = variable,
+      y = "Conteo"
+    ) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+}
+
+for (j in variables_categoricas) {
+  print(graficar_categorias(moras, j))
+}
+```
+
+**Gráfico de SEXO:** Vemos que en la base de datos hay más hombres que mujeres\
+**Gráfico de TIPO_DE_ASEGURAMIENTO:** La mayor concentración de personas está en los asalariados y la menor cantidad está dentro de los convenios especiales.\
+**Gráfico por SECTOR:** Se puede notar una gran diferencia entre ambos sectores, hay mas concentracion en el sector privado que en el público\
+**Gráfico de INDICADOR_ACTIVO:** La mayor parte de las personas, aún cuentan con un seguro activo.\
+**Gráfico por INDICADOR.EXTRANJERO:** Se puede difrenciar la cantidad de personas nacionales y extranjeras dentro de la base de datos.\
+**Gráfico por INDICADOR_MOROSO** **:** Hay más personas NO morosas que morosas,\
