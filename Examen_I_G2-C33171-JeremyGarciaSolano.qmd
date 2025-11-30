@@ -168,3 +168,33 @@ ggplot(moras, aes(x = EDAD, fill = INDICADOR_MOROSO)) +
 
 \
 **Gráfico de EDAD:** El gráfico muestra que la distribución de edades es muy similar entre morosos y no morosos, con la mayoría concentrada entre los 25 y 55 años. No se observan diferencias claras en la forma o los picos entre ambos grupos, por lo que la edad no parece ser un factor que permita distinguir o predecir la morosidad.
+
+## 10.Árbol
+
+```{r}
+moras_1 <- moras %>%
+  mutate(
+    TIPO_ASEGURAMIENTO = case_when(
+      grepl("ASALARIADO", TIPO_ASEGURAMIENTO) ~ "ASALARIADO",
+      grepl("VOLUNTARIO", TIPO_ASEGURAMIENTO) ~ "VOLUNTARIO",
+      grepl("PENSIONADOS", TIPO_ASEGURAMIENTO) ~ "PENSIONADO",
+      grepl("TRABAJADOR INDEPENDIENTE", TIPO_ASEGURAMIENTO) ~ "INDEPENDIENTE",
+      grepl("CONVENIOS ESPECIALES", TIPO_ASEGURAMIENTO) ~ "CONVENIO",
+      TRUE ~ TIPO_ASEGURAMIENTO
+    )
+  )
+moras_1$IDENTIFICACION <- NULL
+tree <- rpart(INDICADOR_MOROSO~., data = moras_1)
+rpart.plot(tree)
+```
+
+## **Explicación del árbol**
+
+Cada nodo tiene 3 elementos: SI / NO, ún numero entre 0 y 1, y por último un porcetaje. El SI / NO, es el INDICADOR_MOROSOS, el siguiente numero, nos da la probabilidad de estar en la clsificacion de morosidad dada en el nodo, y por último, el número porcentual representa el tamaño de población que cae en dicha clase. Cada nivel tiene su "filtro", por ejemplo, el filtro "salario \< 304e+3" , si la respuesta es si, se recorre el arbol por la derecha, pero si es no, se recorre la izquierda.\
+Analicemos el arbol poco a poco.
+
+**Filtro 1:** TIPO_SEGURO=ASALARIADO,CONVENIO,PENSIONADO,VOLUNTARIO: Si se pertenece a ese grupo, el gráfico nos dice que la probabilidad de ser no moroso es de 0.11, y que el 86% de la poblacion tiene ese seguro. Si la respuesta al filtro es NO, entonces la probabilidad de ser moroso es de 0.56, y que el 14% de la poblacion no tienen los seguros mencionados en el filtro.
+
+**Filtro 2:**I NDICADOR_EXTRANJERO=NO: Acá se mantiene la decisión del nodo anterior, seguimos en los que no tienen esos tipos de aseguramiento. Si la persona es no extranjera, es decir, nacional, el grafico muestra que la probabilidad de ser moroso es de 0.52, y que el 12% de la población que no tienen esos seguro, son nacionales. Si es extranjero, la probabilidad de ser moroso es de 0.81 y el 2% porciento de los que no tienen este tipo de seguro son extranjeros.
+
+**Filtro 3:** SALARIO \< 304e+3 : Recuerde que aún se siguen arrastrando los nodos anteriores, entonces estamos dentro de los que no tienen esos seguros, y son nacionales. Si el salario es menor que la cantidad dada, la probabilidad de ser no moroso es de 0.40, y que el 4% de ese 12% tienen ese salario. Y si la cantidad no es menor que esa cantidad, entonces la probabilidad de ser moroso es de 0.58, y el 8% de ese 12% tienen ese salario.
