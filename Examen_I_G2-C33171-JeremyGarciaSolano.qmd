@@ -7,6 +7,7 @@ institute: "UNIVERSIDAD DE COSTA RICA"
 titlepage: TRUE
 format:
   html: 
+    self-contained: TRUE 
     embed-resources: TRUE
 ---
 
