@@ -28,3 +28,11 @@ moras <- read.csv("C:/Users/jereg/Downloads/moras.txt")
 moras$SALARIO <- gsub(",", ".", moras$SALARIO) #Cambia las comas por puntos
 moras$SALARIO <- as.numeric(moras$SALARIO)
 ```
+
+## 2.Resumen de 5 números
+
+```{r}
+moras %>% 
+  select(SALARIO,EDAD) %>% 
+  summary()
+```
