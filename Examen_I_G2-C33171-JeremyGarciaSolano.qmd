@@ -65,3 +65,15 @@ head(moras)
 ```{r}
 colSums(is.na(moras)) / nrow(moras) * 100
 ```
+
+
+## 5.Imputar NA´s
+
+```{r}
+moras$SALARIO[is.na(moras$SALARIO)] <- median(moras$SALARIO, na.rm = TRUE) #Se imputa la mediana ya que es menos influenciada por los outliers
+
+moras$EDAD[is.na(moras$EDAD)] <- median(moras$EDAD, na.rm = TRUE) #Se imputa la mediana ya que es menos influenciada por los outliers
+
+moras$TIPO_ASEGURAMIENTO[is.na(moras$TIPO_ASEGURAMIENTO)] <- Mode(moras$TIPO_ASEGURAMIENTO,na.rm=TRUE) #Se imputa la moda
+
+```
